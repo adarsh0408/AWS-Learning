@@ -42,10 +42,17 @@ Rules for when and how instances should be added or removed.
 6. Create the Auto Scaling Group
 
 ### **🔹 Step 3: Simulating Load to Trigger Auto Scaling**
+#### **For Linux/macOS:**
 Use **Apache Benchmark (ab)** to generate traffic:
 ```sh
-sudo yum install httpd -y
-sudo systemctl start httpd
+sudo apt install apache2-utils -y  # Ubuntu
+brew install apache2-utils  # macOS
+ab -n 100000 -c 100 http://your-load-balancer-url/
+```
+#### **For Windows:**
+1. Download [Apache Benchmark](https://httpd.apache.org/docs/2.4/programs/ab.html)
+2. Open Command Prompt and run:
+```sh
 ab -n 100000 -c 100 http://your-load-balancer-url/
 ```
 Monitor **Auto Scaling Group → Activity History** to see instances launching or terminating.
@@ -72,8 +79,11 @@ S3 is an object storage service used for storing and retrieving large amounts of
 5. Click **Create**
 
 ### **📌 Uploading Files to S3**
-- Go to the bucket → Click **Upload** → Select files → Click **Upload**
-- Use AWS CLI:
+#### **For Linux/macOS:**
+```sh
+aws s3 cp myfile.txt s3://adarsh-bucket/
+```
+#### **For Windows (PowerShell):**
 ```sh
 aws s3 cp myfile.txt s3://adarsh-bucket/
 ```
@@ -94,15 +104,15 @@ EBS provides **persistent block storage** for EC2 instances.
 - **Snapshots** – Create backups of volumes.
 
 ### **📌 How to Attach and Mount an EBS Volume**
-1. Go to **EC2 Dashboard → Volumes → Create Volume**
-2. Choose **Size & Type** (e.g., 10GB, gp3 SSD)
-3. Attach it to an EC2 instance
-4. SSH into the instance and run:
+#### **For Linux/macOS:**
 ```sh
 sudo mkfs -t ext4 /dev/xvdf
 sudo mkdir /data
 sudo mount /dev/xvdf /data
 ```
+#### **For Windows:**
+1. Open **Disk Management** → Right-click on the new disk → Initialize it.
+2. Create a new volume → Assign a drive letter.
 
 ---
 
@@ -115,13 +125,17 @@ EFS provides **shared, scalable file storage** for multiple EC2 instances.
 - **Pay for Usage** – No need to pre-provision storage.
 
 ### **📌 How to Create and Mount an EFS File System**
-1. Go to **EFS Dashboard → Create File System**
-2. Choose the VPC and Security Group
-3. Mount the file system using AWS CLI:
+#### **For Linux/macOS:**
 ```sh
 sudo yum install -y amazon-efs-utils
 sudo mkdir /mnt/efs
 sudo mount -t efs fs-12345678:/ /mnt/efs
+```
+#### **For Windows:**
+1. Install the [AWS EFS Client for Windows](https://aws.amazon.com/efs/)
+2. Use PowerShell to mount:
+```sh
+New-PSDrive -Name "E" -PSProvider FileSystem -Root "\\fs-12345678.efs.us-east-1.amazonaws.com\share"
 ```
 
 ---
