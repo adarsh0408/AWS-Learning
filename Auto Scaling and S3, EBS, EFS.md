@@ -1,4 +1,4 @@
-# **Chapter 2: Auto Scaling & AWS Storage (S3, EBS, EFS)**
+# **Chapter 5: Auto Scaling & AWS Storage (S3, EBS, EFS)**
 
 ## **📌 Introduction**
 Auto Scaling ensures that your AWS environment scales up or down automatically based on demand. AWS storage services like **S3, EBS, and EFS** provide flexible storage solutions for various workloads.
@@ -6,6 +6,7 @@ Auto Scaling ensures that your AWS environment scales up or down automatically b
 ---
 
 # **🔹 Section 1: Auto Scaling**
+
 ## **1️⃣ What is Auto Scaling?**
 Auto Scaling allows AWS to automatically adjust the number of EC2 instances based on traffic demand to ensure optimal performance and cost efficiency.
 
@@ -26,7 +27,7 @@ Rules for when and how instances should be added or removed.
 - **Dynamic Scaling** – Automatically adjusts based on metrics (CPU utilization, request count).
 - **Scheduled Scaling** – Increases/decreases instances at specific times.
 
-## **3️⃣ How to Set Up Auto Scaling (Step-by-Step)**
+## **3️⃣ How to Set Up Auto Scaling (Step-by-Step with Hands-on Practical)**
 ### **🔹 Step 1: Create a Launch Template**
 1. Go to **EC2 Dashboard → Launch Templates → Create Launch Template**
 2. Configure instance details (AMI, instance type, security groups, etc.)
@@ -40,11 +41,21 @@ Rules for when and how instances should be added or removed.
 5. Configure scaling policies (CPU usage threshold, scheduled actions)
 6. Create the Auto Scaling Group
 
+### **🔹 Step 3: Simulating Load to Trigger Auto Scaling**
+Use **Apache Benchmark (ab)** to generate traffic:
+```sh
+sudo yum install httpd -y
+sudo systemctl start httpd
+ab -n 100000 -c 100 http://your-load-balancer-url/
+```
+Monitor **Auto Scaling Group → Activity History** to see instances launching or terminating.
+
 📌 **Now, AWS will automatically add or remove instances based on traffic demand!**
 
 ---
 
 # **🔹 Section 2: AWS Storage Services**
+
 ## **1️⃣ Amazon S3 (Simple Storage Service)**
 S3 is an object storage service used for storing and retrieving large amounts of data.
 
@@ -53,7 +64,7 @@ S3 is an object storage service used for storing and retrieving large amounts of
 - **Durability & Security** – 99.999999999% (11 9s) durability.
 - **Storage Classes** – Standard, IA (Infrequent Access), Glacier (Archival Storage).
 
-### **📌 How to Create an S3 Bucket**
+### **📌 How to Create an S3 Bucket (Step-by-Step Practical)**
 1. Go to **S3 Dashboard → Create Bucket**
 2. Set a unique **Bucket Name** (e.g., `adarsh-bucket`)
 3. Choose a region
@@ -67,6 +78,11 @@ S3 is an object storage service used for storing and retrieving large amounts of
 aws s3 cp myfile.txt s3://adarsh-bucket/
 ```
 
+### **📌 Enabling Static Website Hosting**
+1. Go to your S3 bucket → **Properties** → **Static Website Hosting**
+2. Enable it and set **index.html** as the default document
+3. Upload your website files
+
 ---
 
 ## **2️⃣ Amazon EBS (Elastic Block Store)**
@@ -77,11 +93,11 @@ EBS provides **persistent block storage** for EC2 instances.
 - **Durability** – Data is retained even if an EC2 instance is stopped.
 - **Snapshots** – Create backups of volumes.
 
-### **📌 How to Attach an EBS Volume**
+### **📌 How to Attach and Mount an EBS Volume**
 1. Go to **EC2 Dashboard → Volumes → Create Volume**
 2. Choose **Size & Type** (e.g., 10GB, gp3 SSD)
 3. Attach it to an EC2 instance
-4. SSH into the instance and mount the volume:
+4. SSH into the instance and run:
 ```sh
 sudo mkfs -t ext4 /dev/xvdf
 sudo mkdir /data
