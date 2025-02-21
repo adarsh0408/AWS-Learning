@@ -1,4 +1,4 @@
-# **Chapter 5: Auto Scaling & AWS Storage (S3, EBS, EFS)**
+# **Chapter 2: Auto Scaling & AWS Storage (S3, EBS, EFS)**
 
 ## **📌 Introduction**
 Auto Scaling ensures that your AWS environment scales up or down automatically based on demand. AWS storage services like **S3, EBS, and EFS** provide flexible storage solutions for various workloads.
